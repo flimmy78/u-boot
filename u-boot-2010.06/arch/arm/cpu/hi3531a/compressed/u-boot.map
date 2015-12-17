@@ -1,0 +1,192 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00000000                . = 0x0
+                0x00000000                . = ALIGN (0x4)
+
+.text           0x80700000     0x35a8
+ start.o(.text)
+ .text          0x80700000     0x28a0 start.o
+                0x80700000                _start
+                0x80702040                _blank_zone_start
+                0x80702044                _blank_zone_end
+                0x80702054                _armboot_start
+                0x80702058                _bss_start
+                0x8070205c                _bss_end
+                0x807025c0                v7_flush_dcache_all
+                0x8070266c                init_registers
+ *(.text)
+ .text          0x807028a0      0xa70 startup.o
+                0x80702ab4                uart_early_puts
+                0x80702ab8                reset_cpu
+                0x80702abc                start_armboot
+                0x807032f4                do_undefined_instruction
+                0x807032f8                do_software_interrupt
+                0x807032fc                do_prefetch_abort
+                0x80703300                do_data_abort
+                0x80703304                do_not_used
+                0x80703308                do_fiq
+                0x8070330c                do_irq
+ .text          0x80703310       0xf4 cache-cp15.o
+                0x80703340                icache_enable
+                0x80703358                icache_disable
+                0x80703370                icache_status
+                0x8070337c                dcache_enable
+                0x80703394                dcache_disable
+                0x807033ac                dcache_status
+                0x807033b8                enable_mmu
+                0x807033e8                stop_mmu
+ .text          0x80703404      0x1a4 mmu.o
+                0x80703404                mmu_pagedir_init
+                0x80703420                mmu_pagedir_cached_range
+                0x80703440                mmu_pagedir_nocached_range
+                0x80703470                flush_cache_off
+                0x80703484                mmu_startup
+                0x807034c0                mmu_turnoff
+                0x807034d8                dcache_stop
+                0x807034e8                dcache_start
+                0x807034f8                dcache_stop_noflush
+                0x80703508                dcache_flush_all
+                0x80703554                dcache_inv_all
+ .text          0x807035a8        0x0 image_data.o
+                0x807035a8                __text_end = .
+
+.glue_7         0x807035a8        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x807035a8        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x807035a8        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x807035a8        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x807035a8        0x0
+ .iplt          0x00000000        0x0 start.o
+                0x807035a8                . = ALIGN (0x4)
+
+.image          0x807035a8    0x18135
+ *(.image)
+ .image         0x807035a8    0x18135 image_data.o
+                0x807035a8                input_data
+                0x8071b6dd                input_data_end
+                0x8071b6e0                . = ALIGN (0x4)
+
+.rodata         0x8071b6e0        0x4
+ *(SORT(.rodata*))
+ .rodata        0x8071b6e0        0x4 startup.o
+                0x8071b6e0                IMAGE_ENTRY
+
+.rel.dyn        0x8071b6e4        0x0
+ .rel.iplt      0x00000000        0x0 start.o
+                0x8071b6e4                . = ALIGN (0x4)
+
+.data           0x8071b6e4        0x0
+ *(.data)
+ .data          0x8071b6e4        0x0 start.o
+ .data          0x8071b6e4        0x0 startup.o
+ .data          0x8071b6e4        0x0 cache-cp15.o
+ .data          0x8071b6e4        0x0 mmu.o
+ .data          0x8071b6e4        0x0 image_data.o
+
+.igot.plt       0x8071b6e4        0x0
+ .igot.plt      0x00000000        0x0 start.o
+                0x8071b6e4                . = ALIGN (0x4)
+
+.got
+ *(.got)
+                0x8071b6e4                . = ALIGN (0x4)
+                0x8071b6e4                __bss_start = .
+
+.bss            0x8071b6e4        0x4
+ *(.bss)
+ .bss           0x8071b6e4        0x0 start.o
+ .bss           0x8071b6e4        0x4 startup.o
+ .bss           0x8071b6e8        0x0 cache-cp15.o
+ .bss           0x8071b6e8        0x0 mmu.o
+ .bss           0x8071b6e8        0x0 image_data.o
+                0x8071b6e8                _end = .
+Address of section .text set to 0x80700000
+LOAD start.o
+LOAD startup.o
+LOAD cache-cp15.o
+LOAD mmu.o
+LOAD image_data.o
+OUTPUT(u-boot.elf elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x2b
+ .ARM.attributes
+                0x00000000       0x1d start.o
+ .ARM.attributes
+                0x0000001d       0x2f startup.o
+ .ARM.attributes
+                0x0000004c       0x2f cache-cp15.o
+ .ARM.attributes
+                0x0000007b       0x1d mmu.o
+ .ARM.attributes
+                0x00000098       0x1d image_data.o
+
+.comment        0x00000000       0x32
+ .comment       0x00000000       0x32 startup.o
+                                 0x33 (size before relaxing)
+ .comment       0x00000000       0x33 cache-cp15.o
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 startup.o
+ .note.GNU-stack
+                0x00000000        0x0 cache-cp15.o
+
+.debug_line     0x00000000      0x6b1
+ .debug_line    0x00000000      0x1ed start.o
+ .debug_line    0x000001ed      0x2ec startup.o
+ .debug_line    0x000004d9      0x12f cache-cp15.o
+ .debug_line    0x00000608       0xa9 mmu.o
+
+.debug_info     0x00000000     0x19b6
+ .debug_info    0x00000000       0x76 start.o
+ .debug_info    0x00000076     0x1404 startup.o
+ .debug_info    0x0000147a      0x4c8 cache-cp15.o
+ .debug_info    0x00001942       0x74 mmu.o
+
+.debug_abbrev   0x00000000      0x5e9
+ .debug_abbrev  0x00000000       0x14 start.o
+ .debug_abbrev  0x00000014      0x3fe startup.o
+ .debug_abbrev  0x00000412      0x1c3 cache-cp15.o
+ .debug_abbrev  0x000005d5       0x14 mmu.o
+
+.debug_aranges  0x00000000       0x80
+ .debug_aranges
+                0x00000000       0x20 start.o
+ .debug_aranges
+                0x00000020       0x20 startup.o
+ .debug_aranges
+                0x00000040       0x20 cache-cp15.o
+ .debug_aranges
+                0x00000060       0x20 mmu.o
+
+.debug_loc      0x00000000     0x18f0
+ .debug_loc     0x00000000     0x17f1 startup.o
+ .debug_loc     0x000017f1       0xff cache-cp15.o
+
+.debug_ranges   0x00000000      0x208
+ .debug_ranges  0x00000000      0x208 startup.o
+
+.debug_str      0x00000000      0x5ef
+ .debug_str     0x00000000      0x504 startup.o
+                                0x555 (size before relaxing)
+ .debug_str     0x00000504       0xeb cache-cp15.o
+                                0x2d0 (size before relaxing)
+
+.debug_frame    0x00000000      0x264
+ .debug_frame   0x00000000      0x184 startup.o
+ .debug_frame   0x00000184       0xe0 cache-cp15.o

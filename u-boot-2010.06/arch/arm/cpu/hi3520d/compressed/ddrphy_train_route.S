@@ -1,0 +1,1 @@
+../../../../../arch/arm/cpu/hi3520d/ddrphy_train_route.S

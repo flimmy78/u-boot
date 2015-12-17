@@ -1,0 +1,1 @@
+../../../../../arch/arm/cpu/hi3531a/start.S

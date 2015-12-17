@@ -1,0 +1,1 @@
+../../../../../arch/arm/cpu/hi3531a/lowlevel_init.S
